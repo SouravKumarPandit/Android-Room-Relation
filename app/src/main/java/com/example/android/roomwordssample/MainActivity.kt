@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
         val adapter = WordListAdapter()
-         adapter.wordViewModel=wordViewModel
+//         adapter.wordViewModel=wordViewModel
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 

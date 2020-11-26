@@ -58,13 +58,13 @@ data class WordTags(
 
 )
 
-data class UserAndLibrary(
-        @Embedded val user: Word,
+data class WordAndWordDetails(
+        @Embedded val word: Word,
         @Relation(
-                parentColumn = "userId",
-                entityColumn = "userOwnerId"
+                parentColumn = "word",
+                entityColumn = "wordOwnerId"
         )
-        val library: WordTags
+        val wordDetailsList: List<WordDetails>
 )
 
 /*class WordTags {

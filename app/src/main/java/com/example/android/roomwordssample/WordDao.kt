@@ -48,6 +48,10 @@ interface WordDao {
 
     @Query("DELETE FROM word_table")
     suspend fun deleteAll()
+
+    @Transaction
+    @Query("SELECT * FROM word_table")
+    fun getUsersWithPlaylists(): Flow<List<WordAndWordDetails?>>
 }
 
 @Dao

@@ -28,9 +28,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.roomwordssample.WordListAdapter.WordViewHolder
 
-class WordListAdapter : ListAdapter<Word, WordViewHolder>(WORDS_COMPARATOR) {
+class WordListAdapter : ListAdapter<WordAndWordDetails, WordViewHolder>(WORDS_COMPARATOR) {
 
-    var wordViewModel: WordViewModel? = null
+//    var wordViewModel: WordViewModel? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
         val view: View = LayoutInflater.from(parent.context)
@@ -47,7 +47,7 @@ class WordListAdapter : ListAdapter<Word, WordViewHolder>(WORDS_COMPARATOR) {
   inner  class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val wordItemView: TextView = itemView.findViewById(R.id.textView)
         private val wordListLayout: LinearLayout = itemView.findViewById(R.id.wordListLayout)
-        private val infoView: TextView = itemView.findViewById(R.id.tvInfo)
+//        private val infoView: TextView = itemView.findViewById(R.id.tvInfo)
         private val tagView: TextView = itemView.findViewById(R.id.tvtag)
         private val positionView: TextView = itemView.findViewById(R.id.tvPosition)
         private val firstCharView: TextView = itemView.findViewById(R.id.tvFirstChar)
@@ -59,15 +59,15 @@ class WordListAdapter : ListAdapter<Word, WordViewHolder>(WORDS_COMPARATOR) {
                     }
 
                 }*/
-        fun bind(wordData: Word) {
-            wordItemView.hideEmptyText(wordData.word)
-
-           val wordDetails = wordViewModel?.wordDetailsList?.invoke(wordData.word)
+        fun bind(wordData: WordAndWordDetails) {
+            wordItemView.hideEmptyText(wordData.word.word)
+            bindDetails(wordData.wordDetailsList)
+          /* val wordDetails = wordViewModel?.wordDetailsList?.invoke(wordData.word.word)
             wordDetails?.observeForever{
                 if (it!=null){
                     bindDetails(it)
                 }
-            }
+            }*/
 
 //            infoView.hideEmptyText(wordData.wordDetails?.info ?: "")
 //            tagView.hideEmptyText(wordData.wordDetails?.tag ?: "")
@@ -76,7 +76,7 @@ class WordListAdapter : ListAdapter<Word, WordViewHolder>(WORDS_COMPARATOR) {
         }
 
         fun bindDetails(wordDetails: List<WordDetails?>?) {
-
+            wordListLayout.removeAllViews()
             if (!wordDetails.isNullOrEmpty()) {
                 wordDetails.forEachIndexed { i, wordData ->
                     if (wordData != null)
@@ -89,7 +89,7 @@ class WordListAdapter : ListAdapter<Word, WordViewHolder>(WORDS_COMPARATOR) {
         private fun getTextData(context: Context, i: Int, wordData: WordDetails): View {
             val textView = TextView(context)
             textView.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-            textView.text = "$i. ${wordData.info} ${wordData.tag} ${wordData.position}"
+            textView.text = "$i. ${wordData.info} ---- ${wordData.tag} ---- ${wordData.position}"
 
             return textView
         }
@@ -105,12 +105,12 @@ class WordListAdapter : ListAdapter<Word, WordViewHolder>(WORDS_COMPARATOR) {
     }
 
     companion object {
-        private val WORDS_COMPARATOR = object : DiffUtil.ItemCallback<Word>() {
-            override fun areItemsTheSame(oldItem: Word, newItem: Word): Boolean {
+        private val WORDS_COMPARATOR = object : DiffUtil.ItemCallback<WordAndWordDetails>() {
+            override fun areItemsTheSame(oldItem: WordAndWordDetails, newItem: WordAndWordDetails): Boolean {
                 return oldItem === newItem
             }
 
-            override fun areContentsTheSame(oldItem: Word, newItem: Word): Boolean {
+            override fun areContentsTheSame(oldItem: WordAndWordDetails, newItem: WordAndWordDetails): Boolean {
                 return oldItem.word == newItem.word
             }
         }

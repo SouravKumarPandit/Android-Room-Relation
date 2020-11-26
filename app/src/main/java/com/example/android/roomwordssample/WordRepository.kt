@@ -27,7 +27,7 @@ class WordRepository(private val wordDao: WordDao,private val wordDetailsDao: Wo
 
     // Room executes all queries on a separate thread.
     // Observed Flow will notify the observer when the data has changed.
-    val allWords: Flow<List<Word>> = wordDao.getAlphabetizedWords()
+    val allWords: Flow<List<WordAndWordDetails?>> = wordDao.getUsersWithPlaylists()
 //    val allWords: Flow<List<Word>> = wordDetailsDao.findRepositoriesForWord(it)
     val wordDetailsList: (String) -> Flow<List<WordDetails?>?> =
     {
